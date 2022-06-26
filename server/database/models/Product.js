@@ -18,6 +18,14 @@ const Product = sequelize.define('Product', {
       type: DataTypes.STRING,
       allowNull: true
     },
+    productPrice:{
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    productQuantity : {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
     productOwnerId:{
         type: DataTypes.STRING,
         allowNull: false

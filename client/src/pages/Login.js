@@ -6,16 +6,15 @@ import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import create from "../assets/create.png"
 import swal from 'sweetalert';
 import { Redirect } from 'react-router'
-const Register = () => {
+import login from "../assets/login.png"
+const Login = () => {
 
   const [showOtp, setShowOtp] = useState(false)
   const [otpSessionId, setOtpSessionId] = useState();
   const [redirect, setRedirect] = useState(null);
   const [userEnteredData, setuserEnteredData] = useState({
-    name: "",
     phoneNumber: "",
     OTP:""
 })
@@ -40,12 +39,13 @@ const handleInput = (event) =>
             credentials: "include"
             };
             
-            fetch(`${URL}/sendOTP/registerUser`, requestOptions )
+            fetch(`${URL}/sendOTP/loginUser`, requestOptions )
             .then(async response => {
               response.json().then(data =>  {
                   
                   if(response.ok){
 
+                      console.log(data)
                       if(data.Status)
                       {
                         setOtpSessionId(data.Details)
@@ -66,11 +66,11 @@ const handleInput = (event) =>
                         })
                       }           
                   }
-                  else if(data.Details === "Phone Number Already Registered ? Try Again With Another Number")
+                  else if(data.Details === "Phone Number Not Registered")
                       {
                         swal({
                           title: "Failure!",
-                          text: "Number Already Registered ? Try Again !",
+                          text: "Number Is Not Registered ? Go To Register Page To Register !",
                           icon: "error",
                         })
                       }
@@ -90,20 +90,19 @@ const handleInput = (event) =>
   
 
 
-  const registerHandler = () => {
+  const loginHandler = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body:JSON.stringify({
         session_id : otpSessionId,
         otp_entered_by_user : userEnteredData.OTP,
-        phoneNumber : userEnteredData.phoneNumber,
-        name : userEnteredData.name
+        phoneNumber : userEnteredData.phoneNumber
       }),
       credentials: "include"
       };
       
-      fetch(`${URL}/register/user`, requestOptions )
+      fetch(`${URL}/login/user`, requestOptions )
       .then(async response => {
         response.json().then(data =>  {
             
@@ -113,10 +112,11 @@ const handleInput = (event) =>
               {
                 swal({
                   title: "Success",
-                  text: "User Registered Succesfully",
+                  text: "User Logged In Succesfully",
                   icon: "success",
                 })
-                setRedirect(<Redirect to="/login"/>)
+                localStorage.setItem("token",data.token)
+                setRedirect(<Redirect to="/"/>)
               }
               else
               {
@@ -147,17 +147,11 @@ const handleInput = (event) =>
   return (
       <>
       {redirect}
-      <h1>Register For New Account</h1>
+      <h1>Login Into Your Account</h1>
       <Card style={{"borderRadius":"1%","boxShadow": "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
       <CardContent>
         <Grid container spacing={2}>
                 <Grid item md={6} >
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" style={{"marginBottom":"10px"}}>
-                            Enter Name
-                          </Typography>
-                          <TextField id="outlined-basic" label="Full Name" variant="outlined" name="name" value={userEnteredData.name} onChange={handleInput} style={{"marginBottom":"10px"}} />
-
-                          
                           
                               <Typography sx={{ fontSize: 14 }} color="text.secondary"  style={{"marginBottom":"10px"}}>
                                 Enter Phone Number 
@@ -171,14 +165,14 @@ const handleInput = (event) =>
                                     Enter OTP  
                                 </Typography>
                                 <TextField id="outlined-basic" label="6 Digit OTP" variant="outlined" name = "OTP" value={userEnteredData.OTP} onChange={handleInput} style={{"marginBottom":"10px"}}/> <br/>
-                                <Button variant="contained" color="secondary" onClick={registerHandler}>
-                                  Register 
+                                <Button variant="contained" color="secondary" onClick={loginHandler}>
+                                  Login 
                                 </Button>
                             </> : null
                           }
                 </Grid>
                 <Grid item md={6}>
-                  <img src = {create} height = {200} width={200} />
+                  <img src = {login} height = {200} width={200} />
                 </Grid>
           </Grid>
       </CardContent>
@@ -188,4 +182,4 @@ const handleInput = (event) =>
   );
 
 }
-export default Register;
+export default Login;

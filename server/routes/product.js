@@ -8,9 +8,11 @@ router.post('/createProduct', auth, async (req,res) => {
     {
         const product = await Product.create({
             productName:req.body.name,
-            productDetaiks:req.body.details,
+            productDetails:req.body.details,
             productImage:req.body.productImage,
-            productOwnerId: req.user.id
+            productOwnerId: req.user.id,
+            productPrice : req.body.price,
+            productQuantiy: req.body.quantity
         
            })
            await product.save();
@@ -20,9 +22,11 @@ router.post('/createProduct', auth, async (req,res) => {
     {
         const product = await Product.create({
             productName:req.body.name,
-            productDetaiks:req.body.details,
+            productDetails:req.body.details,
             productImage:req.body.productImage,
-            productOwnerId: req.user.id
+            productOwnerId: req.user.id,
+            productPrice : req.body.price,
+            productQuantiy: req.body.quantity
         
            })
            await product.save();

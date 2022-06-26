@@ -17,7 +17,7 @@ const Input = styled('input')({
   });
 
 
-const CreateAuction = () => {
+const CreateNewProduct = () => {
     
     let date = new Date()
     date = date.toISOString();
@@ -180,4 +180,4 @@ const CreateAuction = () => {
   );
 
 }
-export default CreateAuction;
+export default CreateNewProduct;
