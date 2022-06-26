@@ -13,6 +13,7 @@ require('./database/models/User')
 require('./database/models/Product')
 
 const userRoutes = require("./routes/user")
+const productRoutes = require ('./routes/product')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -34,6 +35,7 @@ app.listen(process.env.PORT || 5000,()=>{
 })
 
 app.use(userRoutes);
+app.use(productRoutes);
 
 
 // Production Setup _ Deployment

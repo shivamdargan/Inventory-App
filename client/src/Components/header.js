@@ -41,7 +41,7 @@ const logoutHandler = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to= '/' >
-            <Navbar.Brand>The Auction House</Navbar.Brand>
+            <Navbar.Brand>Inventory App</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -64,9 +64,14 @@ const logoutHandler = () => {
                 </NavDropdown>
               ) : (
                
-                  <Nav.Link href = "http://localhost:5000/auth/google">
-                    <i className="fas fa-user"></i> Sign In
-                  </Nav.Link>
+                <NavDropdown title="Sign In / Sign Up" id="auth">
+                <LinkContainer to='/login'>
+                <NavDropdown.Item>Login </NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to='/register'>
+                <NavDropdown.Item>Register</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
               )}
              
             </Nav>

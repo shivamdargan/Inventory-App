@@ -12,8 +12,8 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.defaultProps = {
-  title: 'Welcome To Auction House',
-  description: 'We sell the best products for cheap',
+  title: 'Welcome To Inventory App',
+  description: 'Managing Products For You',
   keywords: 'clothes, buy readyMadeClothes, cheap latest clothes',
 };
 

@@ -4,13 +4,14 @@ import Product from '../Components/Product';
 // import ErrorMessage from '../Components/errorMessage';
 import HomeLoader from "../Components/HomeLoader"
 import Meta from '../Components/Meta';
+import URL from "../URL"
 
 const Home = () => {
     
     const [productInfo, setProductInfo] = useState(undefined);
     
     const getProducts = () => {
-      fetch(`http://localhost:5000/getProductsList`,  {credentials: "include"})
+      fetch(`${URL}/getProductsList`,  {credentials: "include"})
       .then(async response => {
           if(response.ok){
               response.json().then(data => {

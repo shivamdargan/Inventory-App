@@ -7,6 +7,7 @@ import ProductDetails from './pages/ProductDetails';
 import CreateAuction from "./pages/CreateAuction"
 import MyBids from "./pages/MyBids"
 import MyProducts from "./pages/MyProducts"
+import Register from './pages/Register';
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
                 <Route exact={true} path='/createNewAuction' component={CreateAuction} />
                 <Route exact={true} path='/myBids' component={MyBids} />
                 <Route exact={true} path='/mySales' component={MyProducts} />
+                <Route exact={true} path='/register' component={Register} />
               </Switch>
         </Container>
       </main>  

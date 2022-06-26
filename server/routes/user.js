@@ -23,6 +23,7 @@ const sendOTPMessage = async (phone_no) => {
   }
 
 router.post('/sendOTP/registerUser', async (req,res) => {
+    console.log(req.body)
     const existingUser = await User.findOne({
         where:{
             phoneNumber:req.body.phoneNumber
@@ -93,7 +94,8 @@ router.post('/register/user', async (req,res) => {
   })
 
   router.post('/login/user', async (req,res) => {
-
+    
+    console.log(req.body);
     const {phoneNumber, session_id , otp_entered_by_user } = req.body;
     const existingUser =  await User.findOne({
         where:{
@@ -117,32 +119,6 @@ router.post('/register/user', async (req,res) => {
      
   })
 
-
-//   router.get('/me', function(req, res) {
-
-//     var token = req.headers['x-access-token'];
-//     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-    
-//     jwt.verify(token, process.env.SECRET_KEY, async function(err, decoded) {
-//       if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-      
-//     const loggedIn = await User.findOne({
-//         where:{
-//             user_id:decoded.id
-//         }
-//     });
-//     try
-//     {
-//         res.status(200).send(loggedIn);
-//     }
-//     catch(err)
-//     {
-//         console.error("Error: ", err);
-//     }
-   
-//   });
-
-// })
 
   router.get('/getAll/user', async (req,res) => {
     
