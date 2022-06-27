@@ -102,20 +102,28 @@ router.post('/register/user', async (req,res) => {
             phoneNumber:phoneNumber
         }
     })
-
-    verifiedOTP = await verifyOTP(session_id, otp_entered_by_user)
-    if(verifiedOTP.data.Details === "OTP Matched" && existingUser )
+    try
     {
-        const token = jwt.sign({id: existingUser.user_id}, process.env.SECRET_KEY, {
-            expiresIn: 86400 
-          });
-          res.status(200).send({ auth: true, token: token , user: existingUser });
-    }
-    else
-    {
-        res.status(400).send("Invalid Credentials");
-    }
- 
+         verifiedOTP = await verifyOTP(session_id, otp_entered_by_user)
+    
+            if(verifiedOTP.data.Details === "OTP Matched" && existingUser )
+            {
+                const token = jwt.sign({id: existingUser.user_id}, process.env.SECRET_KEY, {
+                    expiresIn: 86400 
+                  });
+                  res.status(200).send({ auth: true, token: token , user: existingUser });
+            }
+            else
+            {
+                console.log("Elseeses")
+                res.status(400).send("Invalid Credentials");
+            }
+  }
+  catch (err)
+  {
+    console.error(err);
+    res.send(err);
+  }
      
   })
 

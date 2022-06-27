@@ -109,7 +109,6 @@ const handleInput = (event) =>
       .then(async response => {
         response.json().then(data =>  {
             
-            if(response.ok){
               console.log(data)
               if(data.auth)
               {
@@ -130,11 +129,9 @@ const handleInput = (event) =>
                   icon: "warning",
                 })
               }
-            }
+          
        
-          else{
-              throw response.json();
-          }
+        
         })
         .catch(async (error) => {
           console.log(error);

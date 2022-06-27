@@ -4,16 +4,11 @@ import Box from '@mui/material/Box';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import LoadingButton from '@mui/lab/LoadingButton';
 import logistics from "../assets/logistics.svg"
 import { Redirect } from 'react-router-dom';
 import swal from 'sweetalert';
 import URL from '../URL';
-
-const Input = styled('input')({
-    display: 'none',
-  });
 
 
 const CreateNewProduct = () => {
@@ -27,7 +22,7 @@ const CreateNewProduct = () => {
     })
 
 
-
+    const [loader, setLoader] = useState(false);
     const [redirect, setRedirect] = useState();
     const handleInput = (event) =>
     {
@@ -41,7 +36,9 @@ const CreateNewProduct = () => {
 
     const submitHandler = (event) =>
     {
+
         event.preventDefault()
+         setLoader(true);
         let image;
         if(userEnteredData.imageLink === "" )
         {
@@ -113,17 +110,18 @@ const CreateNewProduct = () => {
                                         Name Of The Product <stlye style = {{"color":"red"}}>*</stlye>
                                 </Typography>   
                                     <TextField id="outlined-basic" label="Name" variant="outlined" name="name" value={userEnteredData.name} onChange={handleInput}/>
-                                <Typography variant="h6" component="h2">
+                                <Typography variant="h6" component="h2" >
                                         Description Of The Product <stlye style = {{"color":"red"}}>*</stlye>
                                 </Typography>   
                                 <TextField
+                                    inputProps={{ maxLength: 200 }}
                                     fullWidth 
                                     id="outlined-multiline-static"
                                     label="Description"
                                     multiline
                                     name = "description"
                                     rows={7}
-                                    placeholder="Give A Brief Description Of The Condition Of The Product"
+                                    placeholder="Give A Brief Description (Max 200 Characters)"
                                     value={userEnteredData.description} 
                                     onChange={handleInput}
                                     />
@@ -170,7 +168,11 @@ const CreateNewProduct = () => {
                     </Grid>
                 </Grid>
                 <a style = {{"display":"flex", "justifyContent":"center", "alignItems" :"center"}}>
-                <Button variant="contained" color = "secondary" onClick={submitHandler} >Create New Product</Button>
+                {loader ? <LoadingButton loading variant="contained" color = "secondary" onClick = {submitHandler}>
+                                Submit
+                              </LoadingButton>: <LoadingButton  color = "secondary" variant="contained" onClick = {submitHandler}>
+                                Submit
+                              </LoadingButton>}
                 </a>
                    
                 </div>
