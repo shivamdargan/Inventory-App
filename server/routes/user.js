@@ -115,8 +115,7 @@ router.post('/register/user', async (req,res) => {
             }
             else
             {
-                console.log("Elseeses")
-                res.status(400).send("Invalid Credentials");
+                res.status(400).send({auth:false, Details:"Invalid Credentials !"});
             }
   }
   catch (err)
@@ -146,7 +145,7 @@ router.post('/register/user', async (req,res) => {
     })
     console.log(loggedInUser);
     console.log(req.user);
-    res.status(200).send( {user: loggedInUser, message: "Welcome 🙌 "});
+    res.status(200).send( {user: loggedInUser});
 
      
   })

@@ -12,8 +12,17 @@ require("./database/dbConfig");
 require('./database/models/User')
 require('./database/models/Product')
 
+const swaggerUi = require("swagger-ui-express"),
+swaggerDocument = require("./swagger.json");
+
 const userRoutes = require("./routes/user")
 const productRoutes = require ('./routes/product')
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve, 
+  swaggerUi.setup(swaggerDocument)
+);
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))

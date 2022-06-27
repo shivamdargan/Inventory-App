@@ -6,8 +6,7 @@ const auth = require("../middleware/auth")
 router.post('/createProduct', auth, async (req,res) => {
     try
     {   
-        console.log("Body; dsf", req.body)
-        console.log("Details: ", req.body.details);
+
         if(req.body.productImage)
         {
             const product = await Product.create({

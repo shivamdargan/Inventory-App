@@ -1,0 +1,642 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Inventory Manager",
+      "description": "Inventory Manager Application API Documentation ",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/sendOTP/registerUser" : {
+        "post":{
+          "summary" : "Sends OTP For Helping Users Register",
+          "description": "Checks Whether An Existing User Exists And If Not, Sends The OTP To The Requested Mobile Number",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+                        "name": "phoneNumber",
+                        "in": "body",
+                        "description": "Phone Number To Which The OTP Will Be Sent. ",
+                        "required": true,
+                        "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/OTPResponse"
+                     
+                  }
+              },
+              "401": {
+                  "description": "OTP Not Sent",
+                  "schema": {
+                      "$ref": "#/definitions/OTPResponse"
+                  }
+              }
+          }
+        }
+      },
+      "/sendOTP/loginUser" : {
+        "post":{
+          "summary" : "Sends OTP For Helping Users Login",
+          "description": "Checks Whether An Existing User Exists And Only If It Exists, The OTP Is Sent To The Requested Mobile Number",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+                        "name": "phoneNumber",
+                        "in": "body",
+                        "description": "Phone Number To Which The OTP Will Be Sent. ",
+                        "required": true,
+                        "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/OTPResponse"
+                     
+                  }
+              },
+              "401": {
+                  "description": "OTP Not Sent",
+                  "schema": {
+                      "$ref": "#/definitions/OTPResponse"
+                  }
+              }
+          }
+        }
+      },
+      "/register/user" : {
+        "post":{
+          "summary" : "Registers A User Into The Database",
+          "description": "Checks For Existing Duplicate Users, And Then Proceeds With Registeration Of User With All Corresponding Details. ",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+                        "name": "session_id",
+                        "in": "body",
+                        "description": "This Is The OTP Session Id Which Is Required To Validate The OTP Entered By The User And Ensures Phone Number Validation",
+                        "required": true,
+                        "type": "string"
+            },
+            {
+              "name": "otp_entered_by_user",
+              "in": "body",
+              "description": "This Is The OTP Entered By The User On The Client",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "in": "body",
+              "description": "Name Of The User",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "phoneNumber",
+              "in": "body",
+              "description": "Phone Number Of The User",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful Registeration",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/succesfulRegisteration"
+                     
+                  }
+              },
+              "401": {
+                  "description": "Failed Registeration",
+                  "schema": {
+                      "$ref": "#/definitions/invalidRegisteration"
+                  }
+              }
+          }
+        }
+      },
+      "/login/user" : {
+        "post":{
+          "summary" : "Logs In A User On Succesful Authentication With OTP",
+          "description": "Checks If User Is Registered, And Then Proceeds With Logging In The User By Validating OTP ",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+                        "name": "session_id",
+                        "in": "body",
+                        "description": "This Is The OTP Session Id Which Is Required To Validate The OTP Entered By The User And Ensures Phone Number Validation",
+                        "required": true,
+                        "type": "string"
+            },
+            {
+              "name": "otp_entered_by_user",
+              "in": "body",
+              "description": "This Is The OTP Entered By The User On The Client",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "phoneNumber",
+              "in": "body",
+              "description": "Phone Number Of The User",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful Login",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/succesfulRegisteration"
+                     
+                  }
+              },
+              "401": {
+                  "description": "Failed Login",
+                  "schema": {
+                      "$ref": "#/definitions/invalidRegisteration"
+                  }
+              }
+          }
+        }
+      },
+      "/getAll/user" : {
+        "get":{
+          "summary" : "Returns All Of The Registered Users",
+          "description": "Returns All Of The Registered Users Present In The Database ",
+          "produces": ["application/json"],
+          "parameters": [
+           
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful Request",
+                  "schema": {
+                      "type": "array",
+                       "$ref": "#/definitions/successAllUsers"
+                     
+                  }
+              }
+          }
+        }
+      },
+      "/me/user" : {
+        "get":{
+          "summary" : "Details Of The Currently Logged In User",
+          "description": "Returns All Of The Details Like Name, Phone Number Of The Logged In User",
+          "produces": ["application/json"],
+          "parameters": [
+              {
+              "name": "x-access-token",
+              "in": "header",
+              "description": "This Is The Token Which Is Validated By The JWT To Ensure Valid And Legible Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful Return Of Logged In User",
+                  "schema": {
+                      "type": "array",
+                       "$ref": "#/definitions/successLogInUser"
+                     
+                  }
+              },
+              "403": {
+                "description": "Token Not Present In The Request",
+                "schema": {
+                    "type": "array",
+                     "$ref": "#/definitions/invalidLogInUser"
+                   
+                }
+            },
+            "401": {
+              "description": "Invalid Bearer Token ",
+              "schema": {
+                  "type": "array",
+                   "$ref": "#/definitions/invalidLogInUser"
+                 
+              }
+          }
+          }
+        }
+      },
+      "/createProduct" : {
+        "post":{
+          "summary" : "Create A Product With All Database",
+          "description": "Creates And Stores The Product Details Into The Database By An Authorized User ",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "x-access-token",
+              "in": "header",
+              "description": "This Is The Token Which Is Validated By The JWT To Ensure Valid And Legible Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "in": "body",
+              "description": "Name Of The Product",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "details",
+              "in": "body",
+              "description": "Details Of The Product",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "productImage",
+              "in": "body",
+              "description": "Link Of The Product Image",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "price",
+              "in": "body",
+              "description": "Price Of The Product",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "quantity",
+              "in": "body",
+              "description": "Quantity Of The Product",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successful Product Creation ",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/successProductCreation"
+                     
+                  }
+              },
+              "403": {
+                "description": "Token Not Present In The Request",
+                "schema": {
+                    "type": "array",
+                     "$ref": "#/definitions/invalidLogInUser"
+                   
+                    }
+                },
+                "401": {
+                  "description": "Invalid Bearer Token ",
+                  "schema": {
+                      "type": "array",
+                      "$ref": "#/definitions/invalidLogInUser"
+                    
+                  }
+              }
+          }
+        }
+      },
+      "/getProduct/{productId}" : {
+        "get":{
+          "summary" : "Get Product Details",
+          "description": "Get All Product Details Like Name, Price, Quantity From Database Thorugh Product Id",
+          "produces": ["application/json"],
+          "parameters": [
+
+            {
+              "name": "productId",
+              "in": "path",
+              "description": "Product Id Of A Product (Unique)",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successfully Fetching Product Details ",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/successProductCreation"
+                     
+                  }
+              },
+              "400": {
+                "description": "Error In Fetching Product Details",
+                "schema": {
+                    "type": "object",
+                     "$ref": "#/definitions/errorObject"
+                   
+                    }
+                }
+          }
+        }
+      },
+      "/getProductsList" : {
+        "get":{
+          "summary" : "Get All Of Products Present In The Inventory",
+          "description": "Get All Of Products And Their Detials Present In The Database",
+          "produces": ["application/json"],
+          "parameters": [
+
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successfully Fetched All Products ",
+                  "schema": {
+                      "type": "array",
+                       "$ref": "#/definitions/successAllProduct"
+                     
+                  }
+              },
+              "400": {
+                "description": "Error In Fetching Product Details",
+                "schema": {
+                    "type": "object",
+                     "$ref": "#/definitions/errorObject"
+                   
+                    }
+                }
+          }
+        }
+      },
+      "/my/products" : {
+        "get":{
+          "summary" : "Get All Of Products Created/Listed By The Logged In User",
+          "description": "Get All Of Products And Their Details Created/Listed By The Logged In User",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "x-access-token",
+              "in": "header",
+              "description": "This Is The Token Which Is Validated By The JWT To Ensure Valid And Legible Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successfully Fetched All Products Listed By The User ",
+                  "schema": {
+                      "type": "array",
+                       "$ref": "#/definitions/successProductCreation"
+                     
+                  }
+              },
+              "400": {
+                "description": "Error In Fetching Product Details",
+                "schema": {
+                    "type": "object",
+                     "$ref": "#/definitions/errorObject"
+                   
+                    }
+                }
+          }
+        }
+      },
+      "/delete/products" : {
+        "post":{
+          "summary" : "Delete A Particular Product Listed By The User",
+          "description": "Validate Whether The Logged In User Can Delete The Product And Further, Proceed With Removing Prodct From Database !",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "x-access-token",
+              "in": "header",
+              "description": "This Is The Token Which Is Validated By The JWT To Ensure Valid And Legible Login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "product_id",
+              "in": "body",
+              "description": "Product Id Of The Product That The User Wants To Delete",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Successfully Fetched All Products Listed By The User ",
+                  "schema": {
+                      "type": "array",
+                       "$ref": "#/definitions/deletion"
+                     
+                  }
+              },
+              "400": {
+                "description": "Error In Fetching Product Details",
+                "schema": {
+                    "type": "object",
+                     "$ref": "#/definitions/errorObject"
+                   
+                    }
+                },
+                "401": {
+                  "description": "Requested Product To Delete Does Not Belong To The User",
+                  "schema": {
+                      "type": "object",
+                       "$ref": "#/definitions/deletion"
+                     
+                      }
+                  }
+                
+          }
+        }
+      }
+    },
+    "definitions":{
+      "OTPResponse":{
+          "type":"object",
+          "properties":{
+              "success":{
+                "type":"string"
+              },
+              "Details":{
+                "type":"string"
+              }
+          }
+      },
+      "succesfulRegisteration":{
+        "type":"object",
+        "properties":{
+            "auth":{
+              "type":"boolean"
+            },
+            "token":{
+              "type":"string"
+            },
+            "user":{
+              "type":"object",
+               "properties" : {
+                "user_id":{
+                  "type":"string"
+                },
+                  "name":{
+                      "type":"string"
+                  },
+                  "phoneNumber":{
+                    "type":"string"
+                  }
+                }
+            }
+        }
+    },
+    "invalidRegisteration":{
+      "type":"object",
+      "properties":{
+          "auth":{
+            "type":"boolean"
+          },
+          "Details":{
+            "type":"string"
+          }
+      }
+  },
+  "successAllUsers":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties" : {
+          "user_id":{
+            "type":"string"
+          },
+          "name":{
+              "type":"string"
+          },
+          "phoneNumber":{
+            "type":"string"
+          }
+        }
+      }
+  },
+  "successLogInUser":{
+    "type":"object",
+    "properties":{
+        "user":{
+          "type":"object",
+           "properties" : {
+            " user_id":{
+              "type":"string"
+              },
+              "name":{
+                  "type":"string"
+              },
+              "phoneNumber":{
+                "type":"string"
+              }
+            }
+        }
+    }
+  },
+  "invalidLogInUser":{
+    "type":"object",
+    "properties":{
+        "details":{
+          "type":"string"
+        }
+    }
+  },
+  "successProductCreation":{
+    "type":"object",
+    "properties":{
+        "product":{
+          "type":"object",
+           "properties" : {
+              "productName":{
+                  "type":"string"
+              },
+              "productDetails":{
+                "type":"string"
+              },
+              "productImage":{
+                "type":"string"
+              },
+              "productOwnerId":{
+                "type":"string"
+              },
+              "productPrice":{
+                "type":"string"
+              },
+              "productQuantity":{
+                "type":"string"
+              },
+              "product_id":{
+                "type":"string"
+              }
+            }
+        }
+    }
+  },
+  "errorObject":{
+    "type":"object",
+    "properties":{
+        "error":{
+          "type":"string"
+        }
+    }
+  },
+  "successAllProduct":{
+    "type":"array",
+    "items":{
+      "type":"object",
+      "properties" : {
+        "productName":{
+          "type":"string"
+        },
+        "productDetails":{
+          "type":"string"
+        },
+        "productImage":{
+          "type":"string"
+        },
+        "productOwnerId":{
+          "type":"string"
+        },
+        "productPrice":{
+          "type":"string"
+        },
+        "productQuantity":{
+          "type":"string"
+        },
+        "product_id":{
+          "type":"string"
+        }
+      }
+    }
+  },
+  "deletion":{
+    "type":"object",
+    "properties":{
+           "properties" : {
+                  "success":{
+                    "type":"boolean"
+                    },
+                    "message":{
+                        "type":"string"
+                    }
+        }
+    }
+  }
+    }
+  }
