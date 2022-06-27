@@ -73,7 +73,7 @@ const CreateNewProduct = () => {
              
                   swal({
                     title: "Success!",
-                    text: "Auction Listed Succesfully",
+                    text: "New Product Listed Succesfully",
                     icon: "success",
                   })
                   setRedirect(<Redirect to="/"/>)

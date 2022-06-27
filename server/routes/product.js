@@ -74,4 +74,44 @@ router.get('/getProductsList', async (req,res) => {
     }
   })
 
+  router.get('/my/products',auth,  async (req,res) => {
+    try
+    {
+        const products = await Product.findAll({
+            where:{
+                productOwnerId : req.user.id
+            }
+        });
+        res.status(200).send(products)
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
+  })
+
+  router.post('/delete/products',auth,  async (req,res) => {
+    try
+    {
+        const product = await Product.findOne({
+            where:{
+                product_id : req.body.product_id
+            }
+        });
+        if(product.productOwnerId === req.user.id)
+        {
+            await product.destroy();
+            res.send({success:"true",message:"Product Deleted Succesfully !"});
+        }
+        else
+        {
+            res.send({success:"false",message:"Product Requested To Delete Does Not Belong To This User !"});
+        }
+        
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
+  })
   module.exports = router

@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import { Redirect } from 'react-router'
 import login from "../assets/login.png"
@@ -14,6 +15,8 @@ const Login = () => {
   const [showOtp, setShowOtp] = useState(false)
   const [otpSessionId, setOtpSessionId] = useState();
   const [redirect, setRedirect] = useState(null);
+  const [loader, setLoader] = useState(false);
+
   const [userEnteredData, setuserEnteredData] = useState({
     phoneNumber: "",
     OTP:""
@@ -29,7 +32,7 @@ const handleInput = (event) =>
 
   const otpHandler = () => {
     
-      
+      setLoader(true);
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -117,6 +120,7 @@ const handleInput = (event) =>
                 })
                 localStorage.setItem("token",data.token)
                 setRedirect(<Redirect to="/"/>)
+                window.location.reload();
               }
               else
               {
@@ -151,15 +155,17 @@ const handleInput = (event) =>
       <Card style={{"borderRadius":"1%","boxShadow": "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
       <CardContent>
         <Grid container spacing={2}>
-                <Grid item md={6} >
-                          
+                <Grid className='mt-4 ' item md={6} >
+                       <div className="ml-4">   
                               <Typography sx={{ fontSize: 14 }} color="text.secondary"  style={{"marginBottom":"10px"}}>
                                 Enter Phone Number 
                             </Typography>
                             <TextField id="outlined-basic" label="Phone Number" variant="outlined" name = "phoneNumber" value={userEnteredData.phoneNumber} onChange={handleInput} style={{"marginBottom":"10px"}}/> <br/>
-                            {!showOtp ? <Button variant="contained" color="secondary" onClick={otpHandler}>
+                            {!showOtp ? (loader ? <LoadingButton loading variant="outlined" color = "secondary" onClick = {otpHandler}>
                                 Get OTP
-                           </Button>: null }
+                              </LoadingButton>: <LoadingButton  color = "secondary" variant="outlined" onClick = {otpHandler}>
+                                Get OTP
+                              </LoadingButton> ) : null }
                            {showOtp ?  <>
                               <Typography sx={{ fontSize: 14 }} color="text.secondary" style={{"marginBottom":"10px"}}>
                                     Enter OTP  
@@ -170,9 +176,10 @@ const handleInput = (event) =>
                                 </Button>
                             </> : null
                           }
+                      </div>
                 </Grid>
                 <Grid item md={6}>
-                  <img src = {login} height = {200} width={200} />
+                  <img src = {login} height = {400} width={400} />
                 </Grid>
           </Grid>
       </CardContent>

@@ -49,7 +49,7 @@ const Home = () => {
           { !productInfo.length && <h4>No Products</h4>}
           <Row>
             {productInfo.map((product) => (
-              <Col key={product.p_id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                 <Product productInfo = {product} />
               </Col>
             ))}

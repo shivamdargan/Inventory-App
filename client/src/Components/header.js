@@ -40,7 +40,8 @@ const Header = () => {
 
 
 const logoutHandler = () => {
-  window.location.replace(`${URL}/users/logout`)
+  localStorage.removeItem("token")
+  window.location.reload();
 }
   return (
     <header>
@@ -58,10 +59,7 @@ const logoutHandler = () => {
                     <LinkContainer to='/createNewProduct'>
                     <NavDropdown.Item>Create Product</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/myBids'>
-                    <NavDropdown.Item>Bids Placed By Me</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/mySales'>
+                  <LinkContainer to='/myProducts'>
                     <NavDropdown.Item>My Listed Products</NavDropdown.Item>
                   </LinkContainer>
                     <NavDropdown.Item><div onClick={logoutHandler}>Logout</div></NavDropdown.Item>

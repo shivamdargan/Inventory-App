@@ -58,13 +58,7 @@ const getProduct = () => {
             .then((response) => {
                 response.json().then((data) => {
                     console.log(data)
-                     
-                    // setProdDetails({
-                    //   name:data.productName,
-                    //   desc:data.productDetails,
-                    //   price:data.productPrice,
-                    //   quantity: data.productQuantity
-                    // })
+
                     setProdName(data.productName)
                     setProdDesc(data.productDetails)
                     setProdPrice(data.productPrice)
@@ -86,57 +80,6 @@ const getProduct = () => {
         useEffect(() =>{
           getProduct();
       }, [])
-
-
-
-      // const placeBid = () => {
-
-
-      //   console.log(productId)
-      //   const requestOptions = {
-      //     method: 'POST',
-      //     body:JSON.stringify({ 
-      //       amount: amount,
-      //       p_id:productId
-      //      }),  
-      //     credentials: "include",
-      //     headers: { 'Content-Type': 'application/json' },
-      //     };
-      //     fetch(`http://localhost:5000/insertIntoBidTable`, requestOptions )
-      //     .then(async response => {
-  
-      //         if(response.ok){
-           
-      //             swal({
-      //               title: "Success!",
-      //               text: "Bid Placed Successfully",
-      //               icon: "success",
-      //             })
-      //             window.location.reload(); 
-      //          }
-              
-      //         else{
-      //             throw response.json();
-      //         }
-      //       })
-      //       .catch(async (error) => {
-      //         const errorMessage = await error;
-     
-      //         swal({
-      //           title: "Error!",
-      //           text: errorMessage.toString(),
-      //           icon: "error",
-      //         });
-             
-      //       }) 
-
-
-
-
-
-
-
-      // }
 
 
   return (
