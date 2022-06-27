@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card } from 'react-bootstrap';
 import Rating from '../Components/rating';
-import { Select, Button, FormControl, makeStyles, MenuItem, TextField} from '@material-ui/core/';
+import {  Button,  makeStyles, TextField} from '@material-ui/core/';
 import SinglePageLoader from "../Components/singlePageLoader";
 import noImage from "../assets/no-image.jpg"
-import swal from 'sweetalert';
 import Moment from 'react-moment';  
+
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -31,15 +31,18 @@ const ProductDetails = () => {
   const productId = params.productId;
   const [loading, setLoading] = useState(true);
 
-  const classes = useStyles();
+  
 
   const [prodDetails, setProdDetails] = useState({
-    name:"",
-    desc:"",
-    maxBid:"",
-    endDate:"",
+    image:""
     
 })
+
+const [prodName, setProdName] = useState();
+const [prodDesc, setProdDesc] = useState();
+const [prodPrice, setProdPrice] = useState();
+const [prodQuantity, setProdQuantity] = useState();
+const [prodDate, setProdDate] = useState();
 
 const [img, setImg] = useState(false);
 const [imagePresent, setImagePresent] = useState(false);
@@ -53,26 +56,26 @@ const getProduct = () => {
 
   fetch(`http://localhost:5000/getProduct/${productId}`, {credentials: "include"})
             .then((response) => {
-                response.json().then((problems) => {
-                    console.log(problems[0])
+                response.json().then((data) => {
+                    console.log(data)
                      
-                    setProdDetails({
-                      name:problems[0].name,
-                      desc:problems[0].pdesc,
-                      maxBid:problems[0].maxbid,
-                      endDate: problems[0].enddate
-                    })
+                    // setProdDetails({
+                    //   name:data.productName,
+                    //   desc:data.productDetails,
+                    //   price:data.productPrice,
+                    //   quantity: data.productQuantity
+                    // })
+                    setProdName(data.productName)
+                    setProdDesc(data.productDetails)
+                    setProdPrice(data.productPrice)
+                    setProdQuantity(data.productQuantity)
+                    setProdDate(data.createdAt);
 
-                    
-
-
-                    if(problems[0].pimgs.length)
+                    if(data.productImage !== null)
                      {
                         setImagePresent(true)
-                        
-                        let imagesFinal = []
-                        imagesFinal[0] = new Buffer(problems[0].pimgs[0]).toString("base64")
-                        setImg(imagesFinal)
+                        setProdDetails({...prodDetails, 
+                            image:data.productImage })
                       }
                     setLoading(false)
             })
@@ -80,53 +83,52 @@ const getProduct = () => {
 
 }
 
-
         useEffect(() =>{
           getProduct();
       }, [])
 
 
 
-      const placeBid = () => {
+      // const placeBid = () => {
 
 
-        console.log(productId)
-        const requestOptions = {
-          method: 'POST',
-          body:JSON.stringify({ 
-            amount: amount,
-            p_id:productId
-           }),  
-          credentials: "include",
-          headers: { 'Content-Type': 'application/json' },
-          };
-          fetch(`http://localhost:5000/insertIntoBidTable`, requestOptions )
-          .then(async response => {
+      //   console.log(productId)
+      //   const requestOptions = {
+      //     method: 'POST',
+      //     body:JSON.stringify({ 
+      //       amount: amount,
+      //       p_id:productId
+      //      }),  
+      //     credentials: "include",
+      //     headers: { 'Content-Type': 'application/json' },
+      //     };
+      //     fetch(`http://localhost:5000/insertIntoBidTable`, requestOptions )
+      //     .then(async response => {
   
-              if(response.ok){
+      //         if(response.ok){
            
-                  swal({
-                    title: "Success!",
-                    text: "Bid Placed Successfully",
-                    icon: "success",
-                  })
-                  window.location.reload(); 
-               }
+      //             swal({
+      //               title: "Success!",
+      //               text: "Bid Placed Successfully",
+      //               icon: "success",
+      //             })
+      //             window.location.reload(); 
+      //          }
               
-              else{
-                  throw response.json();
-              }
-            })
-            .catch(async (error) => {
-              const errorMessage = await error;
+      //         else{
+      //             throw response.json();
+      //         }
+      //       })
+      //       .catch(async (error) => {
+      //         const errorMessage = await error;
      
-              swal({
-                title: "Error!",
-                text: errorMessage.toString(),
-                icon: "error",
-              });
+      //         swal({
+      //           title: "Error!",
+      //           text: errorMessage.toString(),
+      //           icon: "error",
+      //         });
              
-            }) 
+      //       }) 
 
 
 
@@ -134,7 +136,7 @@ const getProduct = () => {
 
 
 
-      }
+      // }
 
 
   return (
@@ -149,12 +151,12 @@ const getProduct = () => {
         <>
           <Row>
             <Col md={6}>
-              {imagePresent ? <Image src={`data:image/png;base64,${img}`} alt="dfsjn" fluid /> : <Image src={noImage} alt="dfsjn" fluid />}
+              {imagePresent ? <Image src={prodDetails.image} alt="productImage" fluid /> : <Image src={noImage} alt="productImage" fluid />}
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h3>{prodDetails.name}</h3>
+                  <h3>{prodName}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
@@ -162,8 +164,9 @@ const getProduct = () => {
                     text={`78 reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: {prodDetails.maxBid} Rs</ListGroup.Item>
-                <ListGroup.Item>Description: {prodDetails.desc}</ListGroup.Item>
+                <ListGroup.Item>Price: {prodPrice} Rs</ListGroup.Item>
+                <ListGroup.Item>Description: {prodDesc}</ListGroup.Item>
+                <ListGroup.Item>Quantity: {prodQuantity}</ListGroup.Item>
               </ListGroup>
             </Col>
             <Col md={3}>
@@ -173,7 +176,7 @@ const getProduct = () => {
                     <Row>
                       <Col>Price:</Col>
                       <Col>
-                        <strong>₹ {prodDetails.maxBid}</strong>
+                        <strong>₹ {prodPrice}</strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -194,41 +197,16 @@ const getProduct = () => {
                 <ListGroup variant="flush">
                   <ListGroup.Item>
                     <Row>
-                      <Col>End Date Of Auction:</Col>
+                      <Col>Product Listing Date</Col>
                       <Col>
                       <Moment parse="YYYY-MM-DD HH:mm">
-                          {prodDetails.endDate}
+                          {prodDate}
                      </Moment>
                       </Col>
                     </Row>
                   </ListGroup.Item>
                 </ListGroup>
 
-                <ListGroup variant="flush">
-                  <ListGroup.Item>
-                  <TextField
-              autoComplete="bidAmount"
-              name="bidAmount"
-              variant="outlined"
-              type="number"
-              required
-              id="bidAmount"
-              placeholder="Bid Amount"
-              label="Bid Amount"
-              onChange={(e) => setAmount(e.target.value)}
-            />
-                  </ListGroup.Item>
-
-                </ListGroup>
-
-                <ListGroup variant="flush">
-                  <ListGroup.Item>
-                  <Button variant="contained" color="primary" onClick={placeBid}>
-              Place Bid
-            </Button>
-                  </ListGroup.Item>
-
-                </ListGroup>
               </Card>
             </Col>
           </Row>

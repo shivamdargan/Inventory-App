@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './Components/header';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
-import CreateNewProduct from './pages/createNewProduct';
+import CreateNewProduct from './pages/CreateNewProduct';
 import MyBids from "./pages/MyBids"
 import MyProducts from "./pages/MyProducts"
 import Register from './pages/Register';

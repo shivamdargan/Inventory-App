@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import SinglePageLoader from '../Components/singlePageLoader';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@material-ui/core/Typography';
@@ -8,9 +6,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import auctionImage from "../assets/auction.jpg"
+import logistics from "../assets/logistics.svg"
 import { Redirect } from 'react-router-dom';
 import swal from 'sweetalert';
+import URL from '../URL';
 
 const Input = styled('input')({
     display: 'none',
@@ -18,18 +17,17 @@ const Input = styled('input')({
 
 
 const CreateNewProduct = () => {
-    
-    let date = new Date()
-    date = date.toISOString();
+
     const [userEnteredData, setuserEnteredData] = useState({
         name: "",
         description: "",
-        startBidDate: date,
-        endBidDate : "",
-        maxBidPrice : "",
+        price : "",
+        quantity:"",
+        imageLink:""
     })
 
-    const [imageState, setimageState] = useState()
+
+
     const [redirect, setRedirect] = useState();
     const handleInput = (event) =>
     {
@@ -39,62 +37,59 @@ const CreateNewProduct = () => {
         setuserEnteredData({...userEnteredData, [name]:value })
 
     }
-    
-    const fileHandler = (event) =>
-    {
- 
-      const file = event.target.files;
-      setimageState(file)
-    }
-
-    let data = new FormData()
-
-    data.append('name',userEnteredData.name)
-    data.append('pDesc',userEnteredData.description)
-    data.append('startBidDate',userEnteredData.startBidDate)
-    data.append('endDate',userEnteredData.endBidDate)
-    data.append('maxBid',userEnteredData.maxBidPrice)
-    if(imageState !== undefined)
-    {
-        for(var x = 0; x<imageState.length; x++) {
-          data.append('productImage', imageState[x])
-        }
-    }
 
 
     const submitHandler = (event) =>
     {
         event.preventDefault()
+        let image;
+        if(userEnteredData.imageLink === "" )
+        {
+          image = null;
+        }
+        else
+        {
+          image = userEnteredData.imageLink
+        }
+        const token = localStorage.getItem("token");
         const requestOptions = {
-            method: 'POST',
-            body:data,  
-            credentials: "include"
-            };
-            fetch(`http://localhost:5000/insertIntoProductTable`, requestOptions )
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json',
+                     'x-access-token' : token},
+          body : JSON.stringify({
+                name: userEnteredData.name,
+                details: userEnteredData.description,
+                productImage: image,
+                price: userEnteredData.price,
+                quantity: userEnteredData.quantity
+          }),
+          credentials: "include"
+          };
+            fetch(`${URL}/createProduct`, requestOptions )
             .then(async response => {
-    
+              response.json().then(data => {
+                console.log(data)
                 if(response.ok){
              
-                    swal({
-                      title: "Success!",
-                      text: "Auction Listed Succesfully",
-                      icon: "success",
-                    })
-                    setRedirect(<Redirect to="/"/>)
-                                     
-                 }
-                else{
-                    throw response.json();
-                }
-              })
-              .catch(async (error) => {
-                console.log("error");
-                swal({
-                    title: "Failure!",
-                    text: "Something Went Wrong",
-                    icon: "error",
+                  swal({
+                    title: "Success!",
+                    text: "Auction Listed Succesfully",
+                    icon: "success",
                   })
+                  setRedirect(<Redirect to="/"/>)
+                                   
+               }
+            })
+            .catch(async (error) => {
+              console.log("error");
+              swal({
+                  title: "Failure!",
+                  text: "Something Went Wrong",
+                  icon: "error",
                 })
+              })
+              })
+                
                
     }
     
@@ -115,11 +110,11 @@ const CreateNewProduct = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                                     <Typography variant="h6" component="h2">
-                                        Name Of The Product
+                                        Name Of The Product <stlye style = {{"color":"red"}}>*</stlye>
                                 </Typography>   
                                     <TextField id="outlined-basic" label="Name" variant="outlined" name="name" value={userEnteredData.name} onChange={handleInput}/>
                                 <Typography variant="h6" component="h2">
-                                        Description Of The Product
+                                        Description Of The Product <stlye style = {{"color":"red"}}>*</stlye>
                                 </Typography>   
                                 <TextField
                                     fullWidth 
@@ -128,18 +123,30 @@ const CreateNewProduct = () => {
                                     multiline
                                     name = "description"
                                     rows={7}
-                                    placeholder="Give A Brief Description Of The Condition Of The Product And Justify Its Starting Value."
+                                    placeholder="Give A Brief Description Of The Condition Of The Product"
                                     value={userEnteredData.description} 
                                     onChange={handleInput}
                                     />
                                     <Typography variant="h6" component="h2">
-                                        Select End Time Of Auction
+                                        Enter The Quantity <stlye style = {{"color":"red"}}>*</stlye>
                                     </Typography>  
-                                    <input value = {userEnteredData.endBidDate} onChange={handleInput} type="datetime-local" id="end_auction_date" name="endBidDate"/>
+                                    <TextField
+                                label="Quantity"
+                                id="outlined-start-adornment"
+                                sx={{ m: 1, width: '10ch' }}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">Unit</InputAdornment>,
+                                }}
+                                name = "quantity"
+                                value={userEnteredData.quantity} 
+                                onChange={handleInput}
+                                />
+
+                                    
                     </Grid>
                     <Grid item xs={6}>
                                 <Typography variant="h6" component="h2">
-                                    Starting Bid Of The Product
+                                   Price Of The Product <stlye style = {{"color":"red"}}>*</stlye>
                                 </Typography>  
                                 <TextField
                                 label="Amount In Rupees"
@@ -148,27 +155,22 @@ const CreateNewProduct = () => {
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                                 }}
-                                name = "maxBidPrice"
-                                value={userEnteredData.maxBidPrice} 
+                                name = "price"
+                                value={userEnteredData.price} 
                                 onChange={handleInput}
                                 />
     
                                 <Typography variant="h6" component="h2">
-                                   Upload Supporting Images Of The Product
+                                   Link Of The Supporting Image Of The Product
                                 </Typography> 
-
-                                <label htmlFor="contained-button-file">
-                                    <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={fileHandler} />
-                                    <Button variant="outlined" component="span" color="secondary">
-                                    Upload
-                                    </Button>
-                                </label>
+                                <TextField id="outlined-basic" label="Image Link" variant="outlined" name="imageLink" value={userEnteredData.imageLink} onChange={handleInput}/>
+                                
                                 <br/>
-                                <img src = {auctionImage} className= "ml-4" style = {{"maxHeight":"400px", "maxWidth":"400px"}}/>
+                                <img src = {logistics} className= "ml-4" style = {{"maxHeight":"400px", "maxWidth":"400px"}}/>
                     </Grid>
                 </Grid>
                 <a style = {{"display":"flex", "justifyContent":"center", "alignItems" :"center"}}>
-                <Button variant="contained" color = "secondary" onClick={submitHandler} >Create New Auction</Button>
+                <Button variant="contained" color = "secondary" onClick={submitHandler} >Create New Product</Button>
                 </a>
                    
                 </div>
