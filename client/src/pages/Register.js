@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import create from "../assets/create.png"
 import swal from 'sweetalert';
@@ -166,7 +167,19 @@ const handleInput = (event) =>
                               <Typography sx={{ fontSize: 14 }} color="text.secondary"  style={{"marginBottom":"10px"}}>
                                 Enter Phone Number 
                             </Typography>
-                            <TextField id="outlined-basic" label="Phone Number" variant="outlined" name = "phoneNumber" value={userEnteredData.phoneNumber} onChange={handleInput} style={{"marginBottom":"10px"}}/> <br/>
+                            <TextField
+                                label="Phone Number"
+                                id="outlined-start-adornment"
+                                sx={{width: '27ch' }}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">+91 </InputAdornment>,
+                                }}
+                                name = "phoneNumber"
+                                value={userEnteredData.phoneNumber} 
+                                onChange={handleInput}
+                                style={{"marginBottom":"10px"}}
+                                />
+                           <br/>
                             {!showOtp ? (loader ? <LoadingButton loading variant="outlined" color = "secondary" onClick = {otpHandler}>
                                 Get OTP
                               </LoadingButton>: <LoadingButton  color = "secondary" variant="outlined" onClick = {otpHandler}>

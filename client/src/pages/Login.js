@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
+import InputAdornment from '@mui/material/InputAdornment';
 import { Redirect } from 'react-router'
 import login from "../assets/login.png"
 const Login = () => {
@@ -158,7 +159,19 @@ const handleInput = (event) =>
                               <Typography sx={{ fontSize: 14 }} color="text.secondary"  style={{"marginBottom":"10px"}}>
                                 Enter Phone Number 
                             </Typography>
-                            <TextField id="outlined-basic" label="Phone Number" variant="outlined" name = "phoneNumber" value={userEnteredData.phoneNumber} onChange={handleInput} style={{"marginBottom":"10px"}}/> <br/>
+                            <TextField
+                                label="Phone Number"
+                                id="outlined-start-adornment"
+                                sx={{width: '27ch' }}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">+91 </InputAdornment>,
+                                }}
+                                name = "phoneNumber"
+                                value={userEnteredData.phoneNumber} 
+                                onChange={handleInput}
+                                style={{"marginBottom":"10px"}}
+                                />
+                             <br/>
                             {!showOtp ? (loader ? <LoadingButton loading variant="outlined" color = "secondary" onClick = {otpHandler}>
                                 Get OTP
                               </LoadingButton>: <LoadingButton  color = "secondary" variant="outlined" onClick = {otpHandler}>
