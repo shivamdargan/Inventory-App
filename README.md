@@ -16,6 +16,13 @@ Run The Following Commands
 - npm install (Install All Dependencies)
 - npm run dev (Run The Express Application Using Nodemom)
 ```
+
+## For API Documentation 
+
+Go To ```/api-docs``` 
+
+## Snapshots
+
 Following Are The Snapshots Of The Application:
 
 ## Home Page (Logged in User) 
@@ -31,8 +38,8 @@ Following Are The Snapshots Of The Application:
 ![image](https://user-images.githubusercontent.com/72315012/176127964-c3d6fba6-d2e2-44ae-9373-25c0250c38d9.png)
 
 ## Login Page
-![image](https://user-images.githubusercontent.com/72315012/176128061-478a6a58-d545-415f-931a-bac05906735c.png)
+![image](https://user-images.githubusercontent.com/72315012/176129972-f8a56e2e-2ae0-492d-bb30-c7365dc23f78.png)
 
 ## Register Page
-![image](https://user-images.githubusercontent.com/72315012/176128129-53d47648-e020-441b-a9fa-2ca29343a985.png)
+![image](https://user-images.githubusercontent.com/72315012/176129903-9810361b-7124-483d-88e8-823206debaaf.png)
 
