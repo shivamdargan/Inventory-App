@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import create from "../assets/create.png"
@@ -181,6 +182,9 @@ const handleInput = (event) =>
                                 </Button>
                             </> : null
                           }
+                          <Typography sx={{ fontSize: 14 }} color="text.secondary" style={{"marginBottom":"10px", "marginTop":"20px"}}>
+                                   Already Registered ? <Link to = "/login" style={{"color":"#2B2B52"}} >Login Instead</Link>
+                            </Typography>
                   </div>
                 </Grid>
                 <Grid item md={6}>

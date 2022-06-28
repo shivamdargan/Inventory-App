@@ -6,6 +6,7 @@ import {  Button,  makeStyles, TextField} from '@material-ui/core/';
 import SinglePageLoader from "../Components/singlePageLoader";
 import noImage from "../assets/no-image.jpg"
 import Moment from 'react-moment';  
+import URL from '../URL';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,10 +44,7 @@ const [prodDesc, setProdDesc] = useState();
 const [prodPrice, setProdPrice] = useState();
 const [prodQuantity, setProdQuantity] = useState();
 const [prodDate, setProdDate] = useState();
-
-const [img, setImg] = useState(false);
 const [imagePresent, setImagePresent] = useState(false);
-const [amount, setAmount] = useState(0);
 
 
 
@@ -54,7 +52,7 @@ const [amount, setAmount] = useState(0);
   
 const getProduct = () => {
 
-  fetch(`http://localhost:5000/getProduct/${productId}`, {credentials: "include"})
+  fetch(`${URL}/getProduct/${productId}`, {credentials: "include"})
             .then((response) => {
                 response.json().then((data) => {
                     console.log(data)

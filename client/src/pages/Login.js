@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
+import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router'
 import login from "../assets/login.png"
 const Login = () => {
@@ -173,6 +174,9 @@ const handleInput = (event) =>
                                 </Button>
                             </> : null
                           }
+                                <Typography sx={{ fontSize: 14 }} color="text.secondary" style={{"marginBottom":"10px", "marginTop":"20px"}}>
+                                   Account Not Registered ? <Link to = "/register" style={{"color":"#2B2B52"}} >Sign Up Instead</Link>
+                                </Typography>
                       </div>
                 </Grid>
                 <Grid item md={6}>

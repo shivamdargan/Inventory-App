@@ -100,11 +100,11 @@ router.get('/getProductsList', async (req,res) => {
         if(product.productOwnerId === req.user.id)
         {
             await product.destroy();
-            res.send({success:"true",message:"Product Deleted Succesfully !"});
+            res.status(200).send({success:"true",message:"Product Deleted Succesfully !"});
         }
         else
         {
-            res.send({success:"false",message:"Product Requested To Delete Does Not Belong To This User !"});
+            res.status(401).send({success:"false",message:"Product Requested To Delete Does Not Belong To This User !"});
         }
         
     }

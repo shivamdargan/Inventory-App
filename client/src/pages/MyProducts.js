@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../Components/Product';
-// import ErrorMessage from '../Components/errorMessage';
 import HomeLoader from "../Components/HomeLoader"
 import Meta from '../Components/Meta';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import "animate.css"
 import swal from 'sweetalert';
-
+import URL from '../URL';
 const MyProducts = () => {
     
     const [productInfo, setProductInfo] = useState(undefined);
@@ -23,7 +22,7 @@ const MyProducts = () => {
         credentials: "include"
         };
 
-      fetch(`http://localhost:5000/my/products`, requestOptions)
+      fetch(`${URL}/my/products`, requestOptions)
       .then(async response => {
           if(response.ok){
               response.json().then(data => {
@@ -59,7 +58,7 @@ const MyProducts = () => {
       credentials: "include"
       };
 
-    fetch(`http://localhost:5000/delete/products`, requestOptions)
+    fetch(`${URL}/delete/products`, requestOptions)
     .then(async response => {
         if(response.ok){
             response.json().then(data => {
