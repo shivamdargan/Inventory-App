@@ -16,6 +16,13 @@ Run The Following Commands
 - npm install (Install All Dependencies)
 - npm run dev (Run The Express Application Using Nodemom)
 ```
+
+## For API Documentation 
+
+Go To ```/api-docs``` 
+
+## Snapshots
+
 Following Are The Snapshots Of The Application:
 
 ## Home Page (Logged in User) 
