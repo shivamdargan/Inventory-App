@@ -6,3 +6,5 @@ Dockerfile
 **/.git
 **/.DS_Store
 **/node_modules
+**/client
+

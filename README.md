@@ -3,6 +3,29 @@ Inventory App With OTP Authentication With JWT , CRUD Operations On Products, Us
 
 ## To Run The App
 
+<br/>
+
+### Using Docker
+<br/>
+
+To Run Docker *Locally* 
+
+
+- Run  ``` docker compose up ``` 
+
+
+To Pull Container From Docker Container Registry
+
+
+``` 
+docker pull shivamdargan/inventory-backend
+docker pull shivamdargan/inventory-frontend
+```
+<br/>
+
+### Without Docker 
+<br/>
+
 Inside ```/client``` directory 
 Run The Following Commands 
 ```

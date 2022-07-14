@@ -3,32 +3,26 @@
 version: '3.8'
 services:
   # Service name
-  node:
-    # Creating a custom image
-    build:
-      # Location to the Dockerfile
-      context: .
-      # Name of the Dockerfile
-      dockerfile: Dockerfile
-    volumes:
-          - ./nodeVolume:/
-    ports:
-        # External port:Internal port
-      - 5000:5000
-  # Service name
-  react:
-    # Creating a custom image
-    build:
-      # Location to the Dockerfile
-      context: "./client"
-      # Name of the Dockerfile
-      dockerfile: Dockerfile
-    volumes:
-        - ./reactVolume :/client
+  inventory-frontend:
+    image: inventory-frontend
+    stdin_open: true
     ports:
         # External port:Internal port
       - 3000:3000
-volumes:
-  # Declaring the node service volume.
-  nodeVolume:
-  reactVolume:
+    networks:
+      - inventory-app
+
+  # Service name
+  inventory-backend:
+    image: inventory-backend
+    stdin_open: true
+    ports:
+        # External port:Internal port
+      - 5000:5000
+    networks:
+      - inventory-app
+
+
+networks:
+  inventory-app:
+    driver: bridge
